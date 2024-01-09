@@ -7,8 +7,6 @@
 
 import Foundation
 
-// ---------------------------
-
 public final class RemoteFeedLoader {
     public enum Error: Swift.Error {
         case connectivity
@@ -27,23 +25,12 @@ public final class RemoteFeedLoader {
         self.url = url
         self.client = client
     }
-
-    private func map(_ data: Data, _ response: HTTPURLResponse) -> Result {
-        do {
-            let items = try FeedItemsMapper.map(data, response: response)
-            return .success(items)
-        } catch {
-            return .failure(.invalidData)
-        }
-    }
     
     public func load(completion: @escaping (Result) -> Void) {
-        client.get(from: url) { [weak self] result in
+        client.get(from: url) { result in
             switch result {
             case .success(let data, let response):
-                if let self = self {
-                    completion(self.map(data, response))
-                }
+                completion(FeedItemsMapper.map(data, from: response))
             case .failure:
                 completion(.failure(.connectivity))
             }
