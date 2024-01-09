@@ -87,6 +87,20 @@ final class RemoteFeedLoaderTests: XCTestCase {
         }
     }
 
+    func test_load_doesNotDeliveresultsAfterSUTInctanceHasBeenDeallocated() {
+        let url = URL(string: "https://any-url.com")!
+        let client = HTTPClientSpy()
+        var sut: RemoteFeedLoader? = RemoteFeedLoader(url: url, client: client)
+
+        var capturedResults: [RemoteFeedLoader.Result] = []
+        sut?.load { capturedResults.append($0) }
+
+        sut = nil
+        client.completeWith(statusCode: 200, data: makeItemsJSON([]))
+
+        XCTAssertTrue(capturedResults.isEmpty)
+    }
+
 
     // MARK: - Helpers
     private func trackForMemoryLeaks(_ instance: AnyObject, _ file: StaticString, _ line: UInt) {
