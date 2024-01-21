@@ -8,28 +8,6 @@
 import XCTest
 import EssentialFeed
 
-class URLSessionHTTPClient: HTTPClient {
-    private let session: URLSession
-
-    init(session: URLSession = .shared) {
-        self.session = session
-    }
-
-    struct UnexppectedValuesRepresentation: Error {}
-
-    func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
-        session.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-            } else if let data = data, let response = response as? HTTPURLResponse {
-                completion(.success(data, response))
-            } else {
-                completion(.failure(UnexppectedValuesRepresentation()))
-            }
-        }.resume()
-    }
-}
-
 final class URLSessionHTTPClientTests: XCTestCase {
     override class func setUp() {
         super.setUp()
@@ -67,7 +45,6 @@ final class URLSessionHTTPClientTests: XCTestCase {
     func test_getFromURL_failsOnAllInvalidRepresentationCases() {
         XCTAssertNotNil(resultErrorFor(data: nil, response: nil, error: nil))
         XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPURLResponse(), error: nil))
-        XCTAssertNotNil(resultErrorFor(data: nil, response: anyHTTPURLResponse(), error: nil))
         XCTAssertNotNil(resultErrorFor(data: anyData(), response: nil, error: anyNSError()))
         XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPURLResponse(), error: anyNSError()))
         XCTAssertNotNil(resultErrorFor(data: nil, response: anyHTTPURLResponse(), error: anyNSError()))
@@ -78,6 +55,17 @@ final class URLSessionHTTPClientTests: XCTestCase {
 
     func test_getFromURL_succeedsOnHTTPURLResponseWithData() {
         let data = anyData()
+        let response = anyHTTPURLResponse()
+        let receivedValues = resultValueFor(data: data, response: response, error: nil)
+        URLProtocolStub.stub(data: data, response: response, error: nil)
+
+        XCTAssertEqual(receivedValues?.data, data)
+        XCTAssertEqual(receivedValues?.response.url, response.url)
+        XCTAssertEqual(receivedValues?.response.statusCode, response.statusCode)
+    }
+
+    func test_getFromURL_succeedsOnHTTPURLResponseWithEmptyData() {
+        let data = Data()
         let response = anyHTTPURLResponse()
         let receivedValues = resultValueFor(data: data, response: response, error: nil)
         URLProtocolStub.stub(data: data, response: response, error: nil)
