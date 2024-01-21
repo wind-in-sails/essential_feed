@@ -56,8 +56,8 @@ final class URLSessionHTTPClientTests: XCTestCase {
     func test_getFromURL_succeedsOnHTTPURLResponseWithData() {
         let data = anyData()
         let response = anyHTTPURLResponse()
+
         let receivedValues = resultValueFor(data: data, response: response, error: nil)
-        URLProtocolStub.stub(data: data, response: response, error: nil)
 
         XCTAssertEqual(receivedValues?.data, data)
         XCTAssertEqual(receivedValues?.response.url, response.url)
@@ -65,11 +65,11 @@ final class URLSessionHTTPClientTests: XCTestCase {
     }
 
     func test_getFromURL_succeedsOnHTTPURLResponseWithEmptyData() {
-        let data = Data()
         let response = anyHTTPURLResponse()
-        let receivedValues = resultValueFor(data: data, response: response, error: nil)
-        URLProtocolStub.stub(data: data, response: response, error: nil)
 
+        let receivedValues = resultValueFor(data: nil, response: response, error: nil)
+
+        let data = Data()
         XCTAssertEqual(receivedValues?.data, data)
         XCTAssertEqual(receivedValues?.response.url, response.url)
         XCTAssertEqual(receivedValues?.response.statusCode, response.statusCode)
