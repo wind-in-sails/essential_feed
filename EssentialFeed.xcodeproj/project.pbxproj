@@ -43,6 +43,7 @@
 		A5736D8B2B50A81B00EA13A2 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 		A5736D8E2B53799200EA13A2 /* XCTestCase + MemoryLeakingTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase + MemoryLeakingTracking.swift"; sourceTree = "<group>"; };
 		A5736D902B5CCD3A00EA13A2 /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
+		A5736D922B5D82C300EA13A2 /* EssentialFeed.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = EssentialFeed.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +68,7 @@
 		A5736D592B48E38000EA13A2 = {
 			isa = PBXGroup;
 			children = (
+				A5736D922B5D82C300EA13A2 /* EssentialFeed.xctestplan */,
 				A5736D652B48E38000EA13A2 /* EssentialFeed */,
 				A5736D6F2B48E38100EA13A2 /* EssentialFeedTests */,
 				A5736D642B48E38000EA13A2 /* Products */,

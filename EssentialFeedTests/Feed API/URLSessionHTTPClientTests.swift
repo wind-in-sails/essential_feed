@@ -9,12 +9,12 @@ import XCTest
 import EssentialFeed
 
 final class URLSessionHTTPClientTests: XCTestCase {
-    override class func setUp() {
+    override func setUp() {
         super.setUp()
         URLProtocolStub.startInterceptingRequests()
     }
 
-    override class func tearDown() {
+    override func tearDown() {
         super.tearDown()
         URLProtocolStub.stopInterceptingRequests()
     }
@@ -28,6 +28,9 @@ final class URLSessionHTTPClientTests: XCTestCase {
             XCTAssertEqual(request.url, url)
             XCTAssertEqual(request.httpMethod, "GET")
             exp.fulfill()
+            URLProtocolStub.observeRequests { _ in
+                // once we got result we cancel observing.
+            }
         }
         makeSUT().get(from: url) { _ in }
         wait(for: [exp], timeout: 1.0)
@@ -184,9 +187,9 @@ final class URLSessionHTTPClientTests: XCTestCase {
         }
 
         static func stopInterceptingRequests() {
-            URLProtocol.unregisterClass(URLProtocolStub.self)
             stub = nil
             requestObserver = nil
+            URLProtocol.unregisterClass(URLProtocolStub.self)
         }
 
         override class func canInit(with request: URLRequest) -> Bool {

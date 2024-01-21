@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "12F6D6D4-5668-43B7-A873-BBEB7E7F0DA0",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:EssentialFeed.xcodeproj",
+        "identifier" : "A5736D6A2B48E38100EA13A2",
+        "name" : "EssentialFeedTests"
+      }
+    }
+  ],
+  "version" : 1
+}
